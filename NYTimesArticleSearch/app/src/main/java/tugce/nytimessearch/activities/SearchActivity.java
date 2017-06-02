@@ -84,6 +84,7 @@ public class SearchActivity extends AppCompatActivity{
         preferences = this.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
         editor = preferences.edit();
         setupViews();
+        fetch("Today",0);
     }
 
     private void setupViews(){

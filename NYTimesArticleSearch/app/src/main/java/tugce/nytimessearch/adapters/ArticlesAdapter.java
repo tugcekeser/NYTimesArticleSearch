@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import org.parceler.Parcels;
@@ -28,21 +29,15 @@ public class ArticlesAdapter extends
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        // Your holder should contain a member variable
-        // for any view that will be set as you render a row
-        @BindView(R.id.tvTitle) TextView tvTitle;
-        @BindView(R.id.ivImage) DynamicHeightImageView ivImage;
-        // public TextView tvSnippet;
 
-        // We also create a constructor that accepts the entire item row
-        // and does the view lookups to find each subview
+        @BindView(R.id.tvTitle) TextView tvTitle;
+        @BindView(R.id.tvSnippet) TextView tvSnippet;
+        @BindView(R.id.ivImage)ImageView ivImage;
+
         public ViewHolder(View itemView) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
-            // ivImage = (DynamicHeightImageView) itemView.findViewById(R.id.ivImage);
-            // tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
-            // tvSnippet = (TextView)itemView.findViewById(R.id.tvSnippet);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
@@ -94,14 +89,15 @@ public class ArticlesAdapter extends
         Article article = mArticles.get(position);
 
         // Set item views based on your views and data model
-        TextView tvTitle = viewHolder.tvTitle;
-        tvTitle.setText(article.getHeadline());
-        DynamicHeightImageView ivImage=viewHolder.ivImage;
-        ivImage.setImageResource(0);
+        viewHolder.tvTitle.setText(article.getHeadline());
+        viewHolder.ivImage.setImageResource(0);
+        viewHolder.tvSnippet.setText(article.getSnippet());
         String thumbnail = article.getThumbNail();
 
         if (!TextUtils.isEmpty(thumbnail)) {
-            Glide.with(getContext()).load(thumbnail).into(ivImage);
+            Glide.with(getContext()).load(thumbnail)
+                    .placeholder( R.drawable.news_viewholder)
+                    .into(viewHolder.ivImage);
         }
 
     }
